@@ -1,0 +1,47 @@
+.card {
+	border-radius: 10px;
+	border: 1px solid #e0e0e0;
+	margin-bottom: 1rem;
+}
+
+
+.card-body {
+	padding: 0.75rem 1rem;
+}
+
+.card-title {
+	margin-bottom: 0.25rem;
+}
+
+
+h2 {
+	font-size: 2.5rem;
+	font-weight: 500;
+}
+
+
+button.btn {
+	min-width: 80px;
+}
+
+
+.btn-outline-success {
+	color: #28a745;
+	border-color: #28a745;
+}
+
+.btn-outline-success:hover {
+	background-color: #28a745;
+	color: #fff;
+}
+
+
+.glow {
+	box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.4);
+	border-width: 2px;
+}
+
+
+hr {
+	margin: 0;
+}

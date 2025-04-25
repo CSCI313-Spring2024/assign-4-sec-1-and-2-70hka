@@ -1,0 +1,57 @@
+<div class="container mt-4">
+	<h2 class="mb-3">Contact Manager</h2>
+
+	<div class="bg-light p-3 mb-4 rounded">
+		<button class="btn btn-outline-success me-2" [ngClass]="{ 'glow': !showAddForm }" (click)="toggleView(false)">List Contacts</button>
+		<button class="btn btn-outline-success" [ngClass]="{ 'glow': showAddForm }" (click)="toggleView(true)">Add Contact</button>
+	</div>
+
+	<div *ngIf="!showAddForm">
+		<div *ngFor="let contact of contacts" class="card mb-3">
+			<div class="card-body pb-2">
+				<h5 class="card-title mb-1">{{ contact.firstName }} {{ contact.lastName }}</h5>
+				<p class="text-muted mb-2">{{ contact.phone }}</p>
+				<hr class="my-2" />
+				<div class="d-flex justify-content-end gap-2">
+					<button class="btn btn-primary btn-sm rounded-pill px-3">Edit</button>
+					<button class="btn btn-primary btn-sm rounded-pill px-3">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf="showAddForm">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="mb-4">Add Contact</h4>
+				<form (ngSubmit)="addContact()">
+					<div class="mb-3 row align-items-center">
+						<label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="firstName" [(ngModel)]="newContact.firstName" name="firstName" required />
+						</div>
+					</div>
+				
+					<div class="mb-3 row align-items-center">
+						<label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="lastName" [(ngModel)]="newContact.lastName" name="lastName" required />
+						</div>
+					</div>
+				
+					<div class="mb-3 row align-items-center">
+						<label for="phone" class="col-sm-2 col-form-label">Phone Number</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="phone" [(ngModel)]="newContact.phone" name="phone" required />
+						</div>
+					</div>
+				
+					<div class="text-end">
+						<button type="submit" class="btn btn-primary btn-sm rounded-pill me-2">Add</button>
+						<button type="button" class="btn btn-primary btn-sm rounded-pill" (click)="toggleView(false)">Cancel</button>
+					</div>
+				</form>				
+			</div>
+		</div>
+	</div>
+</div>
