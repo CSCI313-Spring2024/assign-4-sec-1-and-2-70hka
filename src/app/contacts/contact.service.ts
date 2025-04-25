@@ -23,5 +23,11 @@ export class ContactService {
 	addContact(contact: Contact): void {
 		this.contacts.push(contact);
 	}
+
+	deleteContact(contact: Contact): void {
+		this.contacts = this.contacts.filter(c => 
+			!(c.firstName === contact.firstName && c.lastName === contact.lastName && c.phone === contact.phone)
+		);
+	}
   constructor() { }
 }

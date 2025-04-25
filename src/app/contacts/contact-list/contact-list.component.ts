@@ -14,12 +14,20 @@ import { FormsModule } from '@angular/forms';
 export class ContactListComponent {
 	contacts: Contact[] = [];
 	showAddForm = false;
+	showEditForm = false;
 
 	newContact: Contact = {
 		firstName: '',
 		lastName: '',
 		phone: ''
 	}
+	editContactData: Contact = {
+		firstName: '',
+		lastName: '',
+		phone: ''
+	};
+	contactBeingEdited: Contact | null = null;
+	
 
 	constructor(private contactService: ContactService) { }
 
@@ -27,9 +35,18 @@ export class ContactListComponent {
 		this.contacts = this.contactService.getContacts();
 	}
 
-	toggleView(addMode: boolean): void {
-		this.showAddForm = addMode;
+	toggleView(mode: 'list' | 'add' | 'edit', contactToEdit?: Contact): void {
+		this.showAddForm = mode === 'add';
+		this.showEditForm = mode === 'edit';
+	
+		if (mode === 'edit' && contactToEdit) {
+			this.contactBeingEdited = contactToEdit;
+			this.editContactData = { ...contactToEdit };
+		} else {
+			this.contactBeingEdited = null;
+		}
 	}
+	
 
 	addContact(): void {
 		if (this.newContact.firstName && this.newContact.lastName && this.newContact.phone) {
@@ -38,4 +55,32 @@ export class ContactListComponent {
 			this.showAddForm = false;
 		}
 	}
+
+	deleteContact(contact: Contact): void {
+		this.contactService.deleteContact(contact);
+		this.contacts = this.contactService.getContacts();
+	}
+
+	submitEdit(): void {
+		if (!this.contactBeingEdited) return;
+	
+		const index = this.contacts.findIndex(
+			c =>
+				c.firstName === this.contactBeingEdited!.firstName &&
+				c.lastName === this.contactBeingEdited!.lastName &&
+				c.phone === this.contactBeingEdited!.phone
+		);
+	
+		if (index !== -1) {
+			this.contacts[index] = { ...this.editContactData };
+		} else {
+			console.warn('contact not found for editing');
+		}
+	
+		this.showEditForm = false;
+		this.contactBeingEdited = null;
+	}
+	
+	
+	
 }

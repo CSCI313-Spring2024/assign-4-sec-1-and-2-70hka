@@ -1,25 +1,39 @@
 <div class="container mt-4">
 	<h2 class="mb-3">Contact Manager</h2>
 
+	<!-- Toggle Buttons -->
 	<div class="bg-light p-3 mb-4 rounded">
-		<button class="btn btn-outline-success me-2" [ngClass]="{ 'glow': !showAddForm }" (click)="toggleView(false)">List Contacts</button>
-		<button class="btn btn-outline-success" [ngClass]="{ 'glow': showAddForm }" (click)="toggleView(true)">Add Contact</button>
+		<button
+			class="btn btn-outline-success me-2"
+			[ngClass]="{ 'glow': !showAddForm && !showEditForm }"
+			(click)="toggleView('list')">
+			List Contacts
+		</button>
+
+		<button
+			class="btn btn-outline-success"
+			[ngClass]="{ 'glow': showAddForm }"
+			(click)="toggleView('add')">
+			Add Contact
+		</button>
 	</div>
 
-	<div *ngIf="!showAddForm">
+	<!-- List View -->
+	<div *ngIf="!showAddForm && !showEditForm">
 		<div *ngFor="let contact of contacts" class="card mb-3">
 			<div class="card-body pb-2">
 				<h5 class="card-title mb-1">{{ contact.firstName }} {{ contact.lastName }}</h5>
 				<p class="text-muted mb-2">{{ contact.phone }}</p>
 				<hr class="my-2" />
 				<div class="d-flex justify-content-end gap-2">
-					<button class="btn btn-primary btn-sm rounded-pill px-3">Edit</button>
-					<button class="btn btn-primary btn-sm rounded-pill px-3">Delete</button>
+					<button class="btn btn-primary btn-sm rounded-pill px-3" (click)="toggleView('edit', contact)">Edit</button>
+					<button class="btn btn-primary btn-sm rounded-pill px-3" (click)="deleteContact(contact)">Delete</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
+	<!-- Add Contact Form -->
 	<div *ngIf="showAddForm">
 		<div class="card">
 			<div class="card-body">
@@ -31,26 +45,62 @@
 							<input type="text" class="form-control" id="firstName" [(ngModel)]="newContact.firstName" name="firstName" required />
 						</div>
 					</div>
-				
 					<div class="mb-3 row align-items-center">
 						<label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="lastName" [(ngModel)]="newContact.lastName" name="lastName" required />
 						</div>
 					</div>
-				
 					<div class="mb-3 row align-items-center">
 						<label for="phone" class="col-sm-2 col-form-label">Phone Number</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="phone" [(ngModel)]="newContact.phone" name="phone" required />
 						</div>
 					</div>
-				
 					<div class="text-end">
 						<button type="submit" class="btn btn-primary btn-sm rounded-pill me-2">Add</button>
-						<button type="button" class="btn btn-primary btn-sm rounded-pill" (click)="toggleView(false)">Cancel</button>
+						<button type="button" class="btn btn-primary btn-sm rounded-pill" (click)="toggleView('list')">Cancel</button>
 					</div>
-				</form>				
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Contact Form -->
+	<div *ngIf="showEditForm">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="mb-4">Edit Contact</h4>
+				<form (ngSubmit)="submitEdit()">
+					<div class="mb-3 row align-items-center">
+						<label for="editFirstName" class="col-sm-2 col-form-label">First Name</label>
+						<div class="col-sm-10">
+							<input type="text" id="editFirstName" class="form-control"
+								[(ngModel)]="editContactData.firstName"
+								name="editFirstName" required />
+						</div>
+					</div>
+					<div class="mb-3 row align-items-center">
+						<label for="editLastName" class="col-sm-2 col-form-label">Last Name</label>
+						<div class="col-sm-10">
+							<input type="text" id="editLastName" class="form-control"
+								[(ngModel)]="editContactData.lastName"
+								name="editLastName" required />
+						</div>
+					</div>
+					<div class="mb-3 row align-items-center">
+						<label for="editPhone" class="col-sm-2 col-form-label">Phone Number</label>
+						<div class="col-sm-10">
+							<input type="text" id="editPhone" class="form-control"
+								[(ngModel)]="editContactData.phone"
+								name="editPhone" required />
+						</div>
+					</div>
+					<div class="text-end">
+						<button type="submit" class="btn btn-primary btn-sm rounded-pill me-2">Submit Changes</button>
+						<button type="button" class="btn btn-primary btn-sm rounded-pill" (click)="toggleView('list')">Cancel</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
